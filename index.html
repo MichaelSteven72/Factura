@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Ventas</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+        
+        form {
+            padding: 30px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+        
+        caption {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f093fb20 0%, #f5576c20 100%);
+            border-radius: 10px;
+        }
+        
+        th {
+            text-align: left;
+            padding: 12px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        td {
+            padding: 12px;
+        }
+        
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        input[readonly] {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+        
+        select {
+            cursor: pointer;
+            background-color: white;
+        }
+        
+        /* Sección de cabecera */
+        .info-section {
+            background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* Sección de productos */
+        .products-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+        }
+        
+        .products-header th {
+            color: white;
+            padding: 15px;
+        }
+        
+        .product-row {
+            background: white;
+            transition: all 0.3s;
+        }
+        
+        .product-row:hover {
+            background: #f8f9fa;
+            transform: scale(1.01);
+        }
+        
+        /* Adicionales */
+        .adicionales-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .adicionales-title {
+            text-align: center;
+            font-size: 1.3em;
+            color: #d63031;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .adicional-item {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .adicional-item img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .adicional-item img:hover {
+            transform: scale(1.1);
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        
+        /* Sección de totales */
+        .totales-section {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .total-row {
+            background: white;
+            border-radius: 10px;
+            margin: 10px 0;
+            padding: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .total-row th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px 0 0 8px;
+            font-size: 1.1em;
+        }
+        
+        .total-final {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+            font-size: 1.3em !important;
+            font-weight: bold;
+        }
+        
+        .total-row input {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #2d3436;
+            border: none;
+            background: white;
+        }
+        
+        /* Observaciones */
+        .observaciones {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #2d3436;
+            margin: 15px 0;
+        }
+        
+        /* Botones */
+        .button-section {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        input[type="reset"], input[type="submit"] {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        input[type="reset"] {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+        
+        input[type="reset"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(235, 51, 73, 0.4);
+        }
+        
+        input[type="submit"] {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+        
+        input[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(86, 171, 47, 0.4);
+        }
+        
+        /* Forma de pago */
+        .payment-section {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .payment-option {
+            padding: 8px;
+            font-size: 1em;
+            color: #2d3436;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://images.rappi.com/restaurants_logo/46-logo-1625779288431.png" alt="Logo Restaurante">
+            <h1>🍔 FACTURA DE VENTAS 🍕</h1>
+            <p>Comidas Rápidas Premium</p>
+        </div>
+        
+        <form action="">
+            <table>
+                <caption>📋 DATOS DEL CLIENTE</caption>
+                
+                <tr class="info-section">
+                    <th>Nombre Completo</th>
+                    <th><input type="text" name="" id="" placeholder="Ingrese su nombre" required></th>
+                    <th>Tipo de Documento</th>
+                    <th><select name="" id="tp">
+                        <option value="CC">Cédula (CC)</option>
+                        <option value="PPT">Pasaporte (PPT)</option>
+                        <option value="TI">Tarjeta Identidad (TI)</option>
+                    </select></th>
+                    <th>No. Documento</th>
+                    <th><input type="text" name="" id="" placeholder="Número" required></th>
+                </tr>
+                
+                <tr class="info-section">
+                    <th>Dirección</th>
+                    <th><input type="text" name="" id="dir" placeholder="Calle, carrera, #"></th>
+                    <th>Teléfono</th>
+                    <th><input type="text" name="" id="tel" placeholder="Número de contacto"></th>
+                    <th>Atendido por</th>
+                    <th><input type="text" name="" id="emp" placeholder="Nombre empleado"></th>
+                </tr>
+            </table>
+            
+            <table style="margin-top: 30px;">
+                <tr class="products-header">
+                    <th>REFERENCIA</th>
+                    <th colspan="2">DESCRIPCIÓN</th>
+                    <th>CANTIDAD</th>
+                    <th>VALOR UNIT.</th>
+                    <th>SUBTOTAL</th>
+                </tr>
+                
+                <tr class="product-row">
+                    <th>
+                        <select name="prod1" id="prod1" onchange="mostrar();">
+                            <option value="">Seleccionar</option>
+                            <option value="25000">🍔 Combo Hamburguesa</option>
+                            <option value="20000">🌭 Combo Perro Caliente</option>
+                            <option value="35000">🍕 Combo Pizza</option>
+                        </select>
+                    </th>
+                    <th colspan="2"><input type="text" name="desc01" id="desc01" placeholder="Descripción automática" readonly></th>
+                    <th><input type="number" name="cant01" id="cant01" min="0" placeholder="0" onchange="mostrar();"></th>
+                    <th><input type="number" name="vau01" id="vau01" readonly></th>
+                    <th><input type="text" name="vat01" id="vat01" readonly></th>
+                </tr>
+                
+                <tr class="product-row">
+                    <th>
+                        <select name="prod2" id="prod2" onchange="mostrar();">
+                            <option value="">Seleccionar</option>
+                            <option value="25000">🍔 Combo Hamburguesa</option>
+                            <option value="20000">🌭 Combo Perro Caliente</option>
+                            <option value="35000">🍕 Combo Pizza</option>
+                        </select>
+                    </th>
+                    <th colspan="2"><input type="text" name="desc02" id="desc02" placeholder="Descripción automática" readonly></th>
+                    <th><input type="number" name="cant02" id="cant02" min="0" placeholder="0" onchange="mostrar();"></th>
+                    <th><input type="number" name="vau02" id="vau02" readonly></th>
+                    <th><input type="text" name="vat02" id="vat02" readonly></th>
+                </tr>
+                
+                <tr class="product-row">
+                    <th>
+                        <select name="prod3" id="prod3" onchange="mostrar();">
+                            <option value="">Seleccionar</option>
+                            <option value="25000">🍔 Combo Hamburguesa</option>
+                            <option value="20000">🌭 Combo Perro Caliente</option>
+                            <option value="35000">🍕 Combo Pizza</option>
+                        </select>
+                    </th>
+                    <th colspan="2"><input type="text" name="desc03" id="desc03" placeholder="Descripción automática" readonly></th>
+                    <th><input type="number" name="cant03" id="cant03" min="0" placeholder="0" onchange="mostrar();"></th>
+                    <th><input type="number" name="vau03" id="vau03" readonly></th>
+                    <th><input type="text" name="vat03" id="vat03" readonly></th>
+                </tr>
+            </table>
+            
+            <div class="adicionales-section">
+                <div class="adicionales-title">🎁 ADICIONALES DISPONIBLES</div>
+                <table>
+                    <tr>
+                        <th class="adicional-item">
+                            <img src="https://supermercadolaestacion.com/50590-large_default/cerveza-poker-amarilla-lata-x-330-ml.jpg" alt="Cerveza">
+                            <br>
+                            <input type="checkbox" name="checkbox1" id="checkbox1" onchange="mostrar();">
+                            <label for="checkbox1">🍺 Cerveza Lata<br><strong>$3.000</strong></label>
+                        </th>
+                        <th class="adicional-item">
+                            <img src="https://www.mimos.com.co/wp-content/uploads/2022/07/Sundae-salsa.png" alt="Helado">
+                            <br>
+                            <input type="checkbox" name="checkbox2" id="checkbox2" onchange="mostrar();">
+                            <label for="checkbox2">🍨 Helado Sundae<br><strong>$2.500</strong></label>
+                        </th>
+                        <th class="adicional-item">
+                            <img src="https://jotajotafoods.com/wp-content/uploads/2025/01/ZNE00020.png" alt="Jugo">
+                            <br>
+                            <input type="checkbox" name="checkbox3" id="checkbox3" onchange="mostrar();">
+                            <label for="checkbox3">🧃 Jugo Hit Botella<br><strong>$2.300</strong></label>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="totales-section">
+                <table>
+                    <tr class="total-row">
+                        <th colspan="4">💰 TOTAL ADICIONALES</th>
+                        <th colspan="2"><input type="number" name="adic0" id="adic0" readonly></th>
+                    </tr>
+                    
+                    <tr>
+                        <th colspan="2">💳 FORMA DE PAGO</th>
+                        <th colspan="2" class="payment-section">
+                            <div class="payment-option">
+                                <input type="radio" name="fp" id="radio1" value="Efectivo" onchange="mostrar();">
+                                <label for="radio1">💵 Efectivo (10% descuento)</label>
+                            </div>
+                            <div class="payment-option">
+                                <input type="radio" name="fp" id="radio2" value="Nequi" onchange="mostrar();">
+                                <label for="radio2">📱 Nequi</label>
+                            </div>
+                            <div class="payment-option">
+                                <input type="radio" name="fp" id="radio3" value="TjCredito" onchange="mostrar();">
+                                <label for="radio3">💳 Tarjeta de Crédito</label>
+                            </div>
+                        </th>
+                        <th>SUBTOTAL</th>
+                        <td><input type="text" name="subt" id="subt" readonly></td>
+                    </tr>
+                    
+                    <tr class="total-row">
+                        <th colspan="4">📊 IVA (19%)</th>
+                        <th colspan="2"><input type="text" name="iva" id="iva" readonly></th>
+                    </tr>
+                    
+                    <tr class="total-row">
+                        <th colspan="4">🎉 DESCUENTO</th>
+                        <th colspan="2"><input type="text" name="desc" id="desc" readonly></th>
+                    </tr>
+                    
+                    <tr class="total-row">
+                        <th colspan="4" class="total-final">💵 NETO A PAGAR</th>
+   
+                        <th colspan="2"><input type="text" name="neto" id="neto" readonly></th>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="observaciones">
+                ⚠️ OBSERVACIONES: REVISE SU PEDIDO ANTES DE RETIRARLO<br>
+                ¡GRACIAS POR PREFERIRNOS! 🤗🍔🍟🍕
+            </div>
+            
+            <div class="button-section">
+                <input type="reset" value="🗑️ Borrar Todo">
+                <input type="submit" value="✅ Generar Factura" onclick="generar();">
+            </div>
+        </form>
+    </div>
+    
+    <script src="./static/Js/factura.js"></script>    
+</body>
+</html>
